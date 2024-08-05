@@ -37,7 +37,7 @@ function [coordFronteira, visitados, coordVizinhos] = procuraFronteira(matriz,li
     coordVizinhos = {};
     chaveCoord = [strLinha ' ' strCol];
     
-    if isKey(visitados,chaveCoord)
+    if isKey(visitados, chaveCoord)
         return;
     else
         visitados(chaveCoord) = true;
