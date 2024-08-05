@@ -22,7 +22,7 @@
 ## Author: Allan <allan@allan-IdeaPad-3-15ALC6>
 ## Created: 2024-08-01
 
-function [D4, D8, De, Dm] =  distancias(I, Px, Py, Qx, Qy)
+function [D4, D8, De, Dm, menorCaminho] =  distancias(I, Px, Py, Qx, Qy)
   addpath('fila');
   %I = imread(arquivo);
   %I = im2bw(I);
@@ -30,31 +30,31 @@ function [D4, D8, De, Dm] =  distancias(I, Px, Py, Qx, Qy)
   D4 = calc_d4(Px, Py, Qx, Qy);
   D8 = calc_d8(Px, Py, Qx, Qy);
   De = calc_de(Px, Py, Qx, Qy);
-  Dm = calc_dm(I,Px, Py, Qx, Qy);
+  [menorCaminho, Dm] = calc_dm(I,Px, Py, Qx, Qy);
 endfunction
 
-function retval = calc_d4 (Px, Py, Qx, Qy)
-  retval = abs(Px - Qx) + abs(Py - Qy);
+function d4 = calc_d4 (Px, Py, Qx, Qy)
+  d4 = abs(Px - Qx) + abs(Py - Qy);
 endfunction
 
-function retval = calc_d8 (Px, Py, Qx, Qy)
-  retval = max(abs(Px-Qx), abs(Py-Qy));
+function d8 = calc_d8 (Px, Py, Qx, Qy)
+  d8 = max(abs(Px-Qx), abs(Py-Qy));
 endfunction
 
-function retval = calc_de (Px, Py, Qx, Qy)
-  retval = sqrt((Px-Qx)^2 + (Py-Qy)^2);
+function de = calc_de (Px, Py, Qx, Qy)
+  de = sqrt((Px-Qx)^2 + (Py-Qy)^2);
 endfunction
 
-function retval = calc_dm (I, Px, Py, Qx, Qy)
+function [menorCaminho distanciaDM] = calc_dm (I, Px, Py, Qx, Qy)
   valorRegiao = I(Px,Py);
   if valorRegiao != I(Qx,Qy)
     retval = false;
     return;
   endif
-  retval = getDistanciaDM(I, Px, Py, Qx, Qy, valorRegiao);
+  [menorCaminho distanciaDM] = getDistanciaDM(I, Px, Py, Qx, Qy, valorRegiao);
 endfunction
 
-function distanciaDM = getDistanciaDM(matriz,linhaOrigem,colOrigem,linhaDestino,colDestino,valorRegiao)
+function [menorCaminho distanciaDM]= getDistanciaDM(matriz,linhaOrigem,colOrigem,linhaDestino,colDestino,valorRegiao)
   visitados = containers.Map();
   chaveCoordPixelOrigem = criarChaveDaCoord(linhaOrigem,colOrigem);
   visitados(chaveCoordPixelOrigem) = false;
@@ -66,7 +66,7 @@ function distanciaDM = getDistanciaDM(matriz,linhaOrigem,colOrigem,linhaDestino,
     chaveCoordPixelAtual = criarChaveDaCoord(coordenadas(1), coordenadas(2));
 
     if coordenadas(1) == linhaDestino && coordenadas(2) == colDestino
-      distanciaDM = contaPredecessores(visitados,chaveCoordPixelAtual,0);
+      [menorCaminho distanciaDM] = getMenorCaminho(matriz, visitados, chaveCoordPixelAtual);
       return;
     end
 
@@ -77,21 +77,24 @@ function distanciaDM = getDistanciaDM(matriz,linhaOrigem,colOrigem,linhaDestino,
       c = coordVizinhosConexosM{i}(2);
       chaveCoordPixelVizinho = criarChaveDaCoord(l, c);
       if !isKey(visitados, chaveCoordPixelVizinho)
-        visitados(chaveCoordPixelVizinho) = chaveCoordPixelAtual;
-        enqueue(filaVisitas, [l,c]);
+        visitados(chaveCoordPixelVizinho) = chaveCoordPixelAtual;   %Armazena o predecessor
+        filaVisitas = enqueue(filaVisitas, [l,c]);
       endif
     end
-
   end
 endfunction
 
-function predecessoresTotal = contaPredecessores(visitados, chave, predecessores)
-  if chave
-    predecessores++;
-    predecessoresTotal = contaPredecessores(visitados, visitados(chave), predecessores);
-    return;
+function [menorCaminho, distanciaTotal] = getMenorCaminho(matriz, visitados, chave)
+  menorCaminho = zeros(size(matriz));
+  distanciaTotal = 0;
+  while visitados(chave) != false
+    coordenadas = extrairCoordDaChave(chave);
+    menorCaminho(coordenadas(1), coordenadas(2)) = 1;
+    chave = visitados(chave);
+    distanciaTotal++;
   end
-  predecessoresTotal = predecessores;
+  coordenadas = extrairCoordDaChave(chave);
+  menorCaminho(coordenadas(1), coordenadas(2)) = 1;
 endfunction
 
 
@@ -161,3 +164,7 @@ endfunction
 function chave = criarChaveDaCoord(linha,col)
   chave = [int2str(linha) ' ' int2str(col)];
 endfunction
+
+function coordenadas = extrairCoordDaChave(chave)
+  coordenadas = str2num(chave);
+end
