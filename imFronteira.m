@@ -1,8 +1,8 @@
-function imFronteira = imFronteira(bawImage,tipoFronteira,tipoVizinhanca,linha,col)
+function imFronteira = imFronteira(imageName,tipoFronteira,tipoVizinhanca,linha,col)
     addpath('fila');
-    %pkg load image;
-    %I = imread(imageName);
-    %bawImage = im2bw(imageName);
+    pkg load image;
+    I = imread(imageName);
+    bawImage = im2bw(I);
     imFronteira = zeros(size(bawImage));
 
     coordFronteira = getCoordFronteira(bawImage,linha,col,tipoVizinhanca,tipoFronteira);
