@@ -1,8 +1,8 @@
 function filteredImage = filtro(image, weight)
-
+    filteredImage = invertFilter(image);
 end
 
-function invertedFilter = (filter)
+function invertedFilter = invertFilter(filter)
     invertedFilter = fliplr(filter);
-    invertedFilter = flipup(invertedFilter);
+    invertedFilter = flipud(invertedFilter);
 end
