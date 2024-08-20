@@ -28,5 +28,5 @@ end
 function newValue = applyFilter(matrix, filter, row, col, weight)
     tempMatrix = matrix(row-1:row+1, col-1:col+1) .* filter;
     tempMatrix = tempMatrix * weight;
-    newValue = uint8(sum(sum(tempMatrix)));
+    newValue = sum(sum(tempMatrix));
 end
