@@ -9,6 +9,8 @@ function filteredImage = filtro(image,filter,weight)
             filteredImage(i,j) = applyFilter(extendedMatrix, filter, i+offsetSize, j+offsetSize, weight);
         end
     end
+
+    filteredImage = uint8(rescale(filteredImage,0,255));
 end
 
 function invertedFilter = invertFilter(filter)
