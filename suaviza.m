@@ -1,15 +1,13 @@
-%% criar função para inverter filtro
+function newImageFileName = suaviza(image)
+    filter = [1,2,1;
+              2,4,2;
+              1,2,1];
 
-%% criar uma função generica que aplica filtros de forma parametrizavel, 
-%% depois so chama essa função de dentro de cada uma das especificas
+    weight = 1/16;
 
-%% criar função para extender matriz de entrada e e preencher copiando o valor ao lado
-%% >> essa função deve contabilizar o tamanho do filtro e estender a matriz num valor igual a arred.para.baixo(size(filtro)/2)
+    newImage = filtro(image,filter,weight);
 
-%% a função deve receber como parametro o fator de multiplicação. Senão, considera 1/soma de todos os pesos ou 1 se a soma de pesos for zero
+    newImageFileName = 'imagem_suavizada.bmp';
 
-%% percorrer matriz transformada fazendo multiplicações ponto a ponto
-%% >> 
-
-
-
+    imwrite(newImage,newImageFileName);
+endfunction
