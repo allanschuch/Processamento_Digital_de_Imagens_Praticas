@@ -1,6 +1,14 @@
 function filteredImage = filtro(image,filter,weight)
     filter = invertFilter(filter);
-    filteredImage = extendMatrix(image, filter)
+    extendedMatrix = extendMatrix(image, filter);
+    filteredImage = zeros(size(image,1), size(image,2));
+    offsetSize = floor(size(filter,1)/2);
+
+    for i = 1:size(filteredImage,1)
+        for j = 1:size(filteredImage,2)
+            filteredImage(i,j) = applyFilter(extendedMatrix, filter, i+offsetSize, j+offsetSize, weight);
+        end
+    end
 end
 
 function invertedFilter = invertFilter(filter)
@@ -10,10 +18,15 @@ end
 
 function extendedMatrix = extendMatrix(matrix,filter)
     filterSize = size(filter, 2);
-    offset = floor(filterSize/2)
+    offset = floor(filterSize/2);
     [matrixRows, matrixCols] = size(matrix);
     extendedMatrix = zeros(matrixRows + (2 * offset), matrixCols + (2 * offset));
     [extendedMatrixRows, extendedMatrixCols] = size(extendedMatrix);
-
     extendedMatrix(offset + 1:extendedMatrixRows - offset, offset + 1:extendedMatrixCols - offset) = matrix(:,:);
+end
+
+function newValue = applyFilter(matrix, filter, row, col, weight)
+    tempMatrix = matrix(row-1:row+1, col-1:col+1) .* filter;
+    tempMatrix = tempMatrix * weight;
+    newValue = uint8(sum(sum(tempMatrix)));
 end
