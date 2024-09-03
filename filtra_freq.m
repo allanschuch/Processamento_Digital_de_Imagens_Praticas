@@ -18,9 +18,6 @@ function img_transformada_name = filtra_freq(imagem, mascara)
 
     img_shifted = img_shifted .* mascara;
 
-    %subplot(2,2,4);
-    %imshow(log(1 + abs(img_shifted)), []);
-
     img_transformada = ifftshift(img_shifted);
     img_filtrada = ifft2(img_transformada);
 
