@@ -6,7 +6,7 @@ function filteredImage = filtro(image,filter,weight)
 
     for i = 1:size(filteredImage,1)
         for j = 1:size(filteredImage,2)
-            filteredImage(i,j) = applyFilter(extendedMatrix, filter, i+offsetSize, j+offsetSize, weight);
+            filteredImage(i,j) = applyFilter(extendedMatrix, filter, i+offsetSize, j+offsetSize, weight,offsetSize);
         end
     end
 
@@ -27,8 +27,8 @@ function extendedMatrix = extendMatrix(matrix,filter)
     extendedMatrix(offset + 1:extendedMatrixRows - offset, offset + 1:extendedMatrixCols - offset) = matrix(:,:);
 end
 
-function newValue = applyFilter(matrix, filter, row, col, weight)
-    tempMatrix = matrix(row-1:row+1, col-1:col+1) .* filter;
+function newValue = applyFilter(matrix, filter, row, col, weight,offsetSize)
+    tempMatrix = matrix(row-offsetSize:row+offsetSize, col-offsetSize:col+offsetSize) .* filter;
     tempMatrix = tempMatrix * weight;
     newValue = sum(sum(tempMatrix));
 end
