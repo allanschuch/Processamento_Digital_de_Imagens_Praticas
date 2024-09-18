@@ -16,13 +16,13 @@ function saida = rgbtohsi(og_image)
             r_loc = r(i,j);
 
             if(b_loc <= g_loc)
-                H(i,j) = acos((0.5*((r_loc - g_loc) + (r_loc - b_loc))) / ((r_loc - g_loc)^2 + (r_loc - b_loc)*(g_loc - b_loc))^0.5)
+                H(i,j) = acos((0.5*((r_loc - g_loc) + (r_loc - b_loc))) / ((r_loc - g_loc)^2 + (r_loc - b_loc)*(g_loc - b_loc))^0.5);
             else
-                H(i,j) = 2*pi*acos((0.5*((r_loc - g_loc) + (r_loc - b_loc))) / ((r_loc - g_loc)^2 + (r_loc - b_loc)*(g_loc - b_loc))^0.5)
+                H(i,j) = 2*pi*acos((0.5*((r_loc - g_loc) + (r_loc - b_loc))) / ((r_loc - g_loc)^2 + (r_loc - b_loc)*(g_loc - b_loc))^0.5);
             end
 
-            S(i,j) = 1 - 3 * min(r_loc, g_loc, b_loc);
-            I(i,j) = (R + G + B) / (3 * 255);
+            S(i,j) = 1 - 3 * min([r_loc, g_loc, b_loc]);
+            I(i,j) = (double(R(i,j) + G(i,j) + B(i,j))) / (3 * 255);
         end
     end
     
