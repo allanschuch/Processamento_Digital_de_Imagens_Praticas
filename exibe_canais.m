@@ -1,6 +1,6 @@
 
 
-function saida = exibe_canais(image, type)
+function = exibe_canais(image, type)
     figure;
 
     c1 = image(:,:,1);
@@ -38,15 +38,4 @@ function saida = exibe_canais(image, type)
         imshow(c3);
         title("Canal I");
     end
-end
-
-function rgb_image = hsi2rgb(hsi_image)
-
-    H = hsi_image(:,:,1) / (2*pi);
-    S = hsi_image(:,:,2);          
-    I = hsi_image(:,:,3);         
-
-    hsv_image = cat(3, H, S, I);
-
-    rgb_image = hsv2rgb(hsv_image);
 end

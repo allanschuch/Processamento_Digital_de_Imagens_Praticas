@@ -29,6 +29,8 @@ function saida = rgbtohsi(og_image)
     saida(:,:,1) = H(:,:);
     saida(:,:,2) = S(:,:);
     saida(:,:,3) = I(:,:);
+
+    exibe_canais(saida, 'hsi');
 end
 
 function saida = normalizaRGB(rgb_image)
