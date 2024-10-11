@@ -1,0 +1,11 @@
+pkg load image;
+I = imread('images/coins.png');
+im_binarizada = im2bw(I);
+imwrite(im_binarizada,'im_binarizada.png');
+elem_est = [1,1,1;1,-1,1;1,1,1];
+im_erodida_name = erosao(im_binarizada,elem_est);
+im_erodida = imread(im_erodida_name);
+im_binarizada = im2bw(im_erodida);
+im_abertura_name = dilata(im_binarizada,elem_est);
+im_abertura = imread(im_abertura_name);
+imwrite(im_abertura,'abertura.png');
